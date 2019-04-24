@@ -1,0 +1,14 @@
+<h1>Register a New User</h1>
+
+<form>
+    <div class="form-group">		
+        <input class="form-control" ng-model="users.name" placeholder="John Doe"></input>
+        <input class="form-control" ng-model="users.userName" placeholder="Username"></input>
+        <input class="form-control" type="password" ng-model="users.password" placeholder="Password"></input>
+    </div>
+    <input type="button" class="btn btn-primary" value="Register" ng-click="save()"></input>	
+</form>
+
+<p>
+    <a href="/#/">Return to Login</a>
+</p>

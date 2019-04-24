@@ -15,8 +15,8 @@ app.config(['$routeProvider', function($routeProvider){
             templateUrl: 'partials/home.html',
             controller: 'HomeCtrl'
         })
-        .when('/add-trans', {
-            templateUrl: 'partials/post-form.html',
+        .when('/add-transaction/:id', {
+            templateUrl: 'partials/newTransaction-form.html',
             controller: 'addTranCtrl'
         })
         .when('/transaction/:id', {
@@ -27,6 +27,10 @@ app.config(['$routeProvider', function($routeProvider){
             templateUrl: 'partials/post-delete.html',
             controller: 'DeleteTranCtrl'
         })
+        .when('/newGroup/:id', {
+            templateUrl: 'partials/newGroup-form.html',
+            controller: 'newGroupCtrl'
+        })
         .otherwise({
             redirectTo: '/login'
         });
@@ -36,151 +40,131 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
     function($scope, $resource, $location, $routeParams, $window, $timeout){
         var x = document.getElementById("newChirp");
         x.style.display="block";
-        var User = $resource('/api/users');
-        User.query( function(userl){
-            for (var i = 0; i < userl.length; i++){
-                if (userl[i]._id == localStorage['id']){
-                    var user = userl[i];
-                    $scope.profileName = user.userName;
-                    $scope.profileID= user._id;
-                    $scope.followers = user.following.length;
-                    $scope.favs = user.favorites;
-                    userl.splice(i,1);
-                }
-            }
+        $scope.selectedGroup = "Not Ready";
+        var User = $resource('api/users/:id', {id: '@_id'});
+        User.get({id: localStorage['id']}, function(user){
+            console.log(user);
             $scope.user = user;
-            for (var j = 0; j < user.following.length; j++){
-                for (var k = 0; k < userl.length; k++){
-                    if (user.following[j] == userl[k]._id){
-                        userl.splice(k,1);
-                    }
-                }
-            }
-            while (userl.length > 3){
-                var x = Math.floor(Math.random() * userl.length);
-                userl.splice(x,1);
-            }
-            $scope.newUsers = userl;
         });
-        
-        // // modify the posts to get correct posts for user
-        var Post = $resource('/api/posts');
-
-        Post.query(function(po){
-            $scope.temp = po;
-            var posts = []
-            for (var i = 0; i < $scope.temp.length; i++){
-                for(var l = 0; l < 1; l++){
-                    var added = false;
-                    if ( $scope.temp[i].replyHead != undefined){
-                        break;
-                    }
-                    if ( $scope.temp[i].author == localStorage['id']){
-                        posts.push($scope.temp[i]);
+        var Group = $resource('api/groups');
+        var g = [];
+        ng = [];
+        setTimeout(function(){
+            Group.query( function(group){
+            console.log(group);
+            
+            for(var i = 0; i < group.length; i++){
+                var added = false;
+                for(var j = 0; j < $scope.user.groups.length; j++){
+                    if(group[i]._id == $scope.user.groups[j]){
+                        g.push(group[i]);
                         added = true;
-                        break;
                     } 
-                    
-                    for ( var j = 0; j < $scope.user.favorites.length; j++){
-                        if ($scope.user.favorites[j] == $scope.temp[i].id){
-                            posts.push($scope.temp[i]);
-                            added = true;
-                            break;
-                        }
-                    }
-                    if(added){
-                        break;
-                    }
-                    for(var k = 0; k < $scope.user.following.length; k++){
-                        if($scope.temp[i].author == $scope.user.following[k]){
-                            posts.push($scope.temp[i]);
-                            added = true;
-                            break
-                        }
-                    }
+                }
+                if(!added){
+                    ng.push(group[i]);
                 }
             }
-            User.query( function(allUsers){
-                $scope.allUsers = allUsers;
+            // groups the user is not in
+            $scope.newGroups = ng;
+            // groups the user is in
+            $scope.groups = g;
             });
-            // sort by date
-            posts.sort(function(a,b){
-                a = new Date(a.date);
-                b = new Date(b.date);
-                return a>b ? -1 : a<b ? 1 : 0;
+        },50);
+        
+
+        $scope.addGroup = function(groupID){
+            // add group to user
+            var User = $resource('/api/users/group/:id', { id:  groupID}, {
+                update: { method: 'PUT' }
             });
 
-            // check admin permissions
-            if ($scope.user.admin){
-                $scope.tempPost = $scope.temp;
-            } else {
-                $scope.tempPost = posts;
-            }
-            setTimeout(function(){
-                var tempP = $scope.tempPost;
-                for(var i = 0; i < tempP.length; i++){
-                    for(var j = 0; j < $scope.allUsers.length; j++){
-                        if (tempP[i].author == $scope.allUsers[j]._id){
-                            tempP[i]['userName'] = $scope.allUsers[j].userName;
-                            break;
-                        }
-                    }
+            User.update({id: groupID}, $scope.user, function(){
+
+            });
+            for(var i = 0; i < $scope.newGroups.length; i++){
+                if($scope.newGroups[i]._id == groupID){
+                    var currentGroup = $scope.newGroups[i];
                 }
-                $scope.posts = tempP;
-                console.log($scope.posts)
-            }, 50);
-            $timeout(function() {}, 100);
-           
-        });
-
-
-        $scope.newPost = function(){
-            console.log("creating new post");
-            console.log($scope.newPost.content);
-            var n = {content: $scope.newPost.content};
-            var Chirp = $resource('/api/posts/' + localStorage['id']);
-            Chirp.save(n, function(){
-                $window.location.reload();
+            }
+            // add user to group
+            var Group = $resource('/api/groups/:id', { id:  localStorage['id']}, {
+                update: { method: 'PUT' }
             });
+
+            Group.update({id: localStorage['id']}, currentGroup, function(){
+            });
+            $location.path('/home');
+
         };
 
 
-        var modal = document.getElementById('replyBox');
-        var deleteChirpModal = document.getElementById('deleteChirp');
-        window.onclick = function(event) {
-            if (event.target == modal ||event.target == deleteChirpModal) {
-                modal.style.display = "none";
-                deleteChirpModal.style.display="none";
-            }
-        }
+        // var modal = document.getElementById('replyBox');
+        // var deleteChirpModal = document.getElementById('deleteChirp');
+        // window.onclick = function(event) {
+        //     if (event.target == modal ||event.target == deleteChirpModal) {
+        //         modal.style.display = "none";
+        //         deleteChirpModal.style.display="none";
+        //     }
+        // }
 
-        $scope.deleteChirpBox = function(deleteChirpID){
-            var x = document.getElementById("deleteChirp");
-            x.style.display="block";
-            console.log($scope.newReply);
-            var Chirp = $resource('/api/posts/:id');
-            Chirp.get({ id: deleteChirpID }, function(post){
-                $scope.deletePost = post;
-            });
-        }
+        // $scope.deleteChirpBox = function(deleteChirpID){
+        //     var x = document.getElementById("deleteChirp");
+        //     x.style.display="block";
+        //     console.log($scope.newReply);
+        //     var Chirp = $resource('/api/posts/:id');
+        //     Chirp.get({ id: deleteChirpID }, function(post){
+        //         $scope.deletePost = post;
+        //     });
+        // }
 
-        $scope.deleteChirp = function(deleteChirpID){
-            var x = document.getElementById("deleteChirp");
-            x.style.display="none";
-            var ChirpDelete = $resource('/api/posts/'+deleteChirpID);
-            ChirpDelete.delete({ id: deleteChirpID }, function(posts){
+        // $scope.deleteChirp = function(deleteChirpID){
+        //     var x = document.getElementById("deleteChirp");
+        //     x.style.display="none";
+        //     var ChirpDelete = $resource('/api/posts/'+deleteChirpID);
+        //     ChirpDelete.delete({ id: deleteChirpID }, function(posts){
                 
-                $window.location.reload();
-            });
-        }
+        //         $window.location.reload();
+        //     });
+        // }
 
-        $scope.closeDeleteChirpBox = function(){
-            var x = document.getElementById("deleteChirp");
-            x.style.display="none";
-        }
+        // $scope.closeDeleteChirpBox = function(){
+        //     var x = document.getElementById("deleteChirp");
+        //     x.style.display="none";
+        // }
 
     }]
 );
+
+
+app.controller('newGroupCtrl', ['$scope', '$resource', '$location', '$routeParams',
+    function($scope, $resource, $location, $routeParams){
+        $scope.newGroup = function(){
+            var Groups = $resource('/api/groups/:userID', {userID: $routeParams.id});
+            Groups.save($scope.group, function(group){
+                console.log(group);
+                $scope.group = group;
+            });
+
+            var User = $resource('api/users/:id', {id: '@_id'});
+            User.get({id: localStorage['id']}, function(user){
+                console.log(user);
+                $scope.user = user;
+            });
+
+            // put group to user
+            setTimeout(function (){
+                var Post = $resource('/api/users/group/:id', { id:  $scope.group._id}, {
+                    update: { method: 'PUT' }
+                });
+
+                // Has to wait so that the post can be gotten and passed in
+                Post.update({id: $scope.group._id}, $scope.user, function(){
+                    $location.path('/home');
+                });
+            }, 50);
+        };
+}]);
 
 
 app.controller('registerCtrl', ['$scope', '$resource', '$location',
@@ -210,13 +194,11 @@ app.controller('loginCtrl', ['$scope', '$location', '$resource',
                     $location.path('/home');
                 } else {
                     $location.path('/');
-                }
-                
-
-                
+                }                
             });
-    };
-}]);
+        };
+    }
+]);
 
 app.controller('editTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
     function($scope, $resource, $location, $routeParams){
@@ -236,6 +218,44 @@ app.controller('editTranCtrl', ['$scope', '$resource', '$location', '$routeParam
         }
     }]
 );
+
+app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
+    function($scope, $resource, $location, $routeParams){
+        console.log("uoua");
+        var User = $resource('/api/users');
+        User.query(function(users){
+            console.log(users);
+            var u = [];
+            for(var i = 0; i < users.length; i++){
+                for(var j = 0; j < users[i].groups.length; j++){
+                    if(users[i].groups[j] == $routeParams.id){
+                        console.log(users[i]);
+                        u.push(users[i]);
+                    }
+                }
+            }
+            $scope.users = u;
+        });
+
+        $scope.addTran = function (amount){
+            var checked = {
+                    to: [],
+                    author: localStorage['id'],
+                    amount: $scope.amount
+                };
+            for(var i = 0; i< $scope.users.length; i++){
+                if(document.getElementById($scope.users[i]._id).checked){
+                    checked.to.push($scope.users[i]._id);
+                }
+            }
+            var Tran = $resource('/api/transactions/' + $routeParams.id);
+            Tran.save(checked, function(){
+                $location.path('/home');
+            });
+
+        }
+}]);
+
 
 app.controller('DeleteTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
     function($scope, $resource, $location, $routeParams){

@@ -4,24 +4,35 @@
 <div class="homepage" align="center" style="background-color:powderblue">
     <div class="topnav">
         <a class="active" href="#/home">Home</a>
-        <a href="/DoesNotExist" style="float:right">Log Out</a>
+        <a href="/login" style="float:right">Log Out</a>
     </div>
     <div class="row">
         <div class="column" style="width: 25%">
             <div id="profile" style=" margin:auto; border-style: solid">
-                <h3 > @{{profileName}}</h3>
-                <h3 ng-model="posts.userID" style="visibility: hidden"> {{profileID}}</h3>
-                <h4> Following: {{user.following.length}}</h4>
-            </div>                      
+                <h3 > {{user.name}}</h3>
+                <p>Groups: {{user.groups.length}}</p>
+                <p>Transactions: {{user.transactions.length}}</p>
+                <h3 ng-model="posts.userID" style="visibility: hidden"> {{user._id}}</h3>
+            </div>  
+            <div ng-repeat="g in newGroups">
+              <input type="button" value="{{g.groupName}} " ng-click="addGroup(g._id)">
+            </div>                    
+        </div>
+        <div>
+            <a href="/#/newGroup/{{user._id}}">
+                Add a Group
+            </a>
         </div>
         <div class="column" style="width:75%">
             <div id="newChirp">
                 <form>
-                    <div class="form-group" style="width: 800px">
-                        <label>Enter your new Chirp</label>     
-                        <input type="text" class="form-control" id="content" name="content" ng-model="newPost.content" maxlength="144"></input>
+                    <div class="form-group" style="width: 35%">
+                        <label>Select a group</label>
+                        <select width="50%" class="form-control" ng-model="selectedGroup" ng-options="group as group.groupName for group in groups">
+                            <!-- <option value={{group._id}}>{{group.groupName}}</option> -->
+                        </select>     
                     </div>
-                    <input type="button" class="btn btn-primary" value="Save" ng-click="newPost()"></input>    
+                    <a ng-disabled="selectedGroup ==='Not Ready'" class="btn btn-primary"  href="/#/add-transaction/{{selectedGroup._id}}">New Transaction</a>    
                 </form>
             </div>
             <div ng-repeat='post in posts'>

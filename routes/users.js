@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var monk = require('monk');
-var db = monk('localhost:27017/chirps');
+var db = monk('localhost:27017/expense');
 
 router.get('/', function(req, res) {
     var collection = db.get('users');
@@ -23,16 +23,37 @@ router.get('/:id', function(req, res) {
   });
 });
 
-// add following
+// New transaction
 router.put('/:id', function(req, res){
   var collection = db.get('users');
-  var follow = req.body.following;
+  var trans = req.body.transactions;
   follow.push(req.params.id);
   collection.update({
       _id: req.body._id
   },
   { $set: {
-      following: follow
+      transactions: trans
+  }
+  }, function(err, user){
+      if (err) throw err;
+
+      res.json(user);
+  });
+});
+
+// New group
+router.put('/group/:id', function(req, res){
+  var collection = db.get('users');
+  var groups = req.body.groups;
+  groups.push(req.params.id);
+  console.log(req.body.user);
+  console.log("wasdf");
+  console.log(req.params.id);
+  collection.update({
+      _id: req.body._id
+  },
+  { $set: {
+      groups: groups
   }
   }, function(err, user){
       if (err) throw err;
@@ -49,8 +70,8 @@ router.post('/', function(req, res){
       userName: req.body.userName,
       password: req.body.password,
       name: req.body.name,
-      following: [],
-      favorites: []
+      transactions: [],
+      groups: []
   }, function(err, user){
       if (err) throw err;
 

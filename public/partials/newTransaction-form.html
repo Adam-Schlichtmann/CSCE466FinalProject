@@ -1,0 +1,21 @@
+<h1>Add a new Transaction</h1>
+
+<form>
+    <div class="form-group">
+        <label>Add new Transaction</label>		
+        <form>
+            <div class="form-group" style="width: 75%">
+                <label>Select a user</label>
+                <div ng-repeat="user in users">
+                    <label>
+                        <input id="{{user._id}}" type="checkbox" ng-model="selectedUsers"/>
+                        {{user.name}}
+                    </label>
+                </div>
+                $<input ng-model="amount" type="text" placeholder="100.00">
+                
+            </div>
+        </form>
+    </div>
+    <input type="button" class="btn btn-primary" value="Save" ng-click="addTran()"></input>	
+</form>
