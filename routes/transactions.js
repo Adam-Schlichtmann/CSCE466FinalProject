@@ -67,14 +67,13 @@ router.post('/:userID', function(req, res){
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
-
-    console.log(req.body.to);
    
     collection.insert({
         from: req.body.author,
         date: dateTime,
         to: req.body.to,
-        amount: req.body.amount
+        amount: req.body.amount,
+        group: req.body.group
     }, function(err, movie){
         console.log(err);
         if (err) throw err;

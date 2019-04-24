@@ -27,7 +27,7 @@ router.get('/:id', function(req, res) {
 router.put('/:id', function(req, res){
   var collection = db.get('users');
   var trans = req.body.transactions;
-  follow.push(req.params.id);
+  trans.push(req.params.id);
   collection.update({
       _id: req.body._id
   },

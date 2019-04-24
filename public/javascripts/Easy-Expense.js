@@ -41,14 +41,33 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
         var x = document.getElementById("newChirp");
         x.style.display="block";
         $scope.selectedGroup = "Not Ready";
+        //Get single user by ID
         var User = $resource('api/users/:id', {id: '@_id'});
         User.get({id: localStorage['id']}, function(user){
             console.log(user);
             $scope.user = user;
         });
+        var Transactions = $resource('api/transactions');
+        Transactions.query(function(trans){
+            console.log(trans);
+            var userTrans = [];
+            for(var k = 0; k < trans.length; k++){
+                for(var l = 0; l < $scope.user.groups.length; l++){
+                    if(trans[k].group == $scope.user.groups[l]){
+                        userTrans.push(trans[k]);
+
+                    }
+                }
+            }
+            $scope.userTrans = userTrans;
+        });
+
+
+
         var Group = $resource('api/groups');
         var g = [];
         ng = [];
+
         setTimeout(function(){
             Group.query( function(group){
             console.log(group);
@@ -221,7 +240,6 @@ app.controller('editTranCtrl', ['$scope', '$resource', '$location', '$routeParam
 
 app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
     function($scope, $resource, $location, $routeParams){
-        console.log("uoua");
         var User = $resource('/api/users');
         User.query(function(users){
             console.log(users);
@@ -237,11 +255,12 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
             $scope.users = u;
         });
 
-        $scope.addTran = function (amount){
+        $scope.addTran = function (){
             var checked = {
                     to: [],
                     author: localStorage['id'],
-                    amount: $scope.amount
+                    amount: $scope.amount,
+                    group: $routeParams.id
                 };
             for(var i = 0; i< $scope.users.length; i++){
                 if(document.getElementById($scope.users[i]._id).checked){
@@ -249,9 +268,27 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
                 }
             }
             var Tran = $resource('/api/transactions/' + $routeParams.id);
-            Tran.save(checked, function(){
-                $location.path('/home');
+            Tran.save(checked, function(trans){
+                console.log(trans);
+                $scope.trans = trans;
             });
+
+            var User = $resource('api/users/:id', {id: '@_id'},{
+                update: { method: 'PUT' }}
+            );
+            //Get single user by ID
+            User.get({id: localStorage['id']}, function(user){
+                console.log(user);
+                $scope.user = user;
+            });
+             
+            setTimeout(function(){
+                User.update({id: $scope.trans._id}, $scope.user, function(){
+                    $location.path('/home');
+                });
+            }, 50);
+
+
 
         }
 }]);

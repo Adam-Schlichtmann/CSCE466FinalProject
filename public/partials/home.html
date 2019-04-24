@@ -35,25 +35,25 @@
                     <a ng-disabled="selectedGroup ==='Not Ready'" class="btn btn-primary"  href="/#/add-transaction/{{selectedGroup._id}}">New Transaction</a>    
                 </form>
             </div>
-            <div ng-repeat='post in posts'>
+            <div ng-repeat='trans in userTrans'>
                 <div id="posts" align="center" >
                     <div id="post_content" class="row">
                         <div id="post_profile" class="column" style="border-right: 3px solid #000000; overflow: hidden; width:20%; height: 100px; float:left;" >
                             <p>
-                                @{{post.userName}}
+                                PostID={{trans._id}}
                             </p>
                         </div>
                         <div id="post_content" class="column" style=" width:70%; height: 100px;" >
 
                             <div id="post_text" class="row" style=" padding-top: 20px; padding-left: 30px; height:70%">
-                                <a ng-if="post.author == user._id || user.admin" href="/#/chirp/{{post._id}}" style="word-break: break-all; word-wrap: break-word;">
-                                    {{post.content}}
+                                <a ng-if="trans.author == user._id || user.admin" href="/#/chirp/{{post._id}}" style="word-break: break-all; word-wrap: break-word;">
+                                    {{trans.from}} charged {{trans.to}} for ${{trans.amount}}
                                 </a>    
                                     <p ng-if="post.author != user._id && !user.admin">
-                                        {{post.content}}
+                                        {{trans.from}} charged {{trans.to}} for ${{trans.amount}}
                                     </p> 
                             </div>
-                            <div id="options" class="row" align="middle" style="margin:auto; padding-left: 250px; height:20%" >
+                            <!-- <div id="options" class="row" align="middle" style="margin:auto; padding-left: 250px; height:20%" >
                                 <div id="reply" class="column" style="padding-right: 10px">
                                     <button class="glyphicon glyphicon-share-alt" ng-click="showReplyBox(post._id,post.userName)">
                                         <i>{{post.replies.length}}</i>
@@ -70,7 +70,7 @@
                                         <i class="glyphicon glyphicon-remove"></i>
                                     </a>    
                                 </div>         
-                            </div>                                                         
+                            </div>                                                          -->
                         </div>
                     </div>
                 </div>                          
