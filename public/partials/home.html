@@ -46,12 +46,12 @@
                         <div id="post_content" class="column" style=" width:70%; height: 100px;" >
 
                             <div id="post_text" class="row" style=" padding-top: 20px; padding-left: 30px; height:70%">
-                                <a ng-if="trans.author == user._id || user.admin" href="/#/chirp/{{post._id}}" style="word-break: break-all; word-wrap: break-word;">
+                                <a ng-if="trans.from == user._id" href="/#/chirp/{{post._id}}" style="word-break: break-all; word-wrap: break-word;">
                                     {{trans.from}} charged {{trans.to}} for ${{trans.amount}}
                                 </a>    
-                                    <p ng-if="post.author != user._id && !user.admin">
-                                        {{trans.from}} charged {{trans.to}} for ${{trans.amount}}
-                                    </p> 
+                                <p ng-if="trans.from != user._id">
+                                    {{trans.from}} charged {{trans.to}} for ${{trans.amount}}
+                                </p> 
                             </div>
                             <!-- <div id="options" class="row" align="middle" style="margin:auto; padding-left: 250px; height:20%" >
                                 <div id="reply" class="column" style="padding-right: 10px">
