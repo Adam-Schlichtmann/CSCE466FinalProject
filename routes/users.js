@@ -23,6 +23,20 @@ router.get('/:id', function(req, res) {
   });
 });
 
+// get users from a list of ids
+router.get('/group/:id', function(req, res) {
+    var users = req.params.id.split(",");
+    var collection = db.get('users');
+    collection.find({ _id: {$in: 
+        users
+    } 
+    }, function(err, users){
+        if (err) throw err;
+  
+        res.json(users);
+    });
+  });
+
 // New transaction
 router.put('/:id', function(req, res){
   var collection = db.get('users');

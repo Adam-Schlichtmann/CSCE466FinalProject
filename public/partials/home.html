@@ -23,7 +23,7 @@
                 Add a Group
             </a>
         </div>
-        <div class="column" style="width:75%">
+        <div class="column" style="width:50%">
             <div id="newChirp">
                 <form>
                     <div class="form-group" style="width: 35%">
@@ -32,7 +32,12 @@
                             <!-- <option value={{group._id}}>{{group.groupName}}</option> -->
                         </select>     
                     </div>
-                    <a ng-disabled="selectedGroup ==='Not Ready'" class="btn btn-primary"  href="/#/add-transaction/{{selectedGroup._id}}">New Transaction</a>    
+                    <a ng-disabled="selectedGroup ==='Not Ready'" class="btn btn-primary"  href="/#/add-transaction/{{selectedGroup._id}}">
+                      New Transaction
+                    </a>  
+                    <a ng-disabled="selectedGroup ==='Not Ready'" class="btn btn-primary"  href="/#/monthReview/{{selectedGroup._id}}">
+                      Calculate Expenses
+                    </a>  
                 </form>
             </div>
             <div ng-repeat='trans in userTrans'>
@@ -40,37 +45,26 @@
                     <div id="post_content" class="row">
                         <div id="post_profile" class="column" style="border-right: 3px solid #000000; overflow: hidden; width:20%; height: 100px; float:left;" >
                             <p>
-                                PostID={{trans._id}}
+                                TranID={{trans._id}}
                             </p>
                         </div>
                         <div id="post_content" class="column" style=" width:70%; height: 100px;" >
 
-                            <div id="post_text" class="row" style=" padding-top: 20px; padding-left: 30px; height:70%">
-                                <a ng-if="trans.from == user._id" href="/#/chirp/{{post._id}}" style="word-break: break-all; word-wrap: break-word;">
-                                    {{trans.from}} charged {{trans.to}} for ${{trans.amount}}
-                                </a>    
-                                <p ng-if="trans.from != user._id">
+                            <div id="post_text" class="row" style=" padding-top: 20px; padding-left: 30px; height:70%">  
+                                <p>
                                     {{trans.from}} charged {{trans.to}} for ${{trans.amount}}
                                 </p> 
                             </div>
-                            <!-- <div id="options" class="row" align="middle" style="margin:auto; padding-left: 250px; height:20%" >
-                                <div id="reply" class="column" style="padding-right: 10px">
-                                    <button class="glyphicon glyphicon-share-alt" ng-click="showReplyBox(post._id,post.userName)">
-                                        <i>{{post.replies.length}}</i>
-                                    </button>
+                            <div id="options" class="row" align="middle" style="margin:auto; padding-left: 250px; height:20%" >  
+                                <div id="edit" class="column">
+                                    <input type="button" value="Edit" class="btn btn-primary" ng-if="trans.from == user._id">
                                 </div>
-                                <div id="favorite" class="column" style="padding-right: 10px">
-                                    <input class="form-control" type="hidden" name="favorites" id="favorites"  ng-model="user.favorites">
-                                    <button value="favorites" class="glyphicon glyphicon-heart" ng-click="favorite(post._id)">  
-                                        <i >{{post.favorited}}</i> 
-                                    </button>
-                                </div>    
                                 <div id="delete" class="column">
-                                    <a ng-if="post.author == user._id || user.admin" ng-click="deleteChirpBox(post._id)" >
-                                        <i class="glyphicon glyphicon-remove"></i>
+                                    <a ng-if="trans.from == user._id" ng-click="deleteChirpBox(post._id)" >
+                                      <i class="glyphicon glyphicon-remove"></i>
                                     </a>    
                                 </div>         
-                            </div>                                                          -->
+                            </div>                                                         
                         </div>
                     </div>
                 </div>                          
