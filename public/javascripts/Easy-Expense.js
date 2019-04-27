@@ -153,13 +153,13 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
 
 
         // var modal = document.getElementById('replyBox');
-        // var deleteChirpModal = document.getElementById('deleteChirp');
-        // window.onclick = function(event) {
-        //     if (event.target == modal ||event.target == deleteChirpModal) {
-        //         modal.style.display = "none";
-        //         deleteChirpModal.style.display="none";
-        //     }
-        // }
+        var deleteChirpModal = document.getElementById('deleteChirp');
+        window.onclick = function(event) {
+            if (event.target == deleteChirpModal) {
+                modal.style.display = "none";
+                deleteChirpModal.style.display="none";
+            }
+        }
 
         $scope.deleteChirpBox = function(deleteTransID,from,to,amount,authorID){
             var x = document.getElementById("deleteChirp");
