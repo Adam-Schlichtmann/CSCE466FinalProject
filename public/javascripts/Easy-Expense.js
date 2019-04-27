@@ -47,22 +47,43 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
             console.log(user);
             $scope.user = user;
         });
+        var UserAll = $resource('api/users/');
+        var allUsers=[];
+        UserAll.query(function (allUsersTemp){
+        	console.log('all users are :');
+        	
+        	allUsers = allUsersTemp;
+        	console.log(allUsers);
+        });
         var Transactions = $resource('api/transactions');
         Transactions.query(function(trans){
             console.log(trans);
-            var userTrans = [];
+            var userTrans = []
             for(var k = 0; k < trans.length; k++){
                 for(var l = 0; l < $scope.user.groups.length; l++){
                     if(trans[k].group == $scope.user.groups[l]){
-                        userTrans.push(trans[k]);
+                    	var nameHolder = 'Unknown';
+                    	
+                    	for(var p =0; p<allUsers.length; p++ ){
+                    		if(trans[k].from == allUsers[p]._id){
+                    			
+                    			nameHolder = allUsers[p].name;
+                    		}
+                    	}
+                    	
+                        userTrans.push({
+                        	trans: trans[k],
+                        	authorName: nameHolder
+
+                        });
 
                     }
                 }
             }
+            console.log('found');
+        	console.log(userTrans);
             $scope.userTrans = userTrans;
         });
-
-
 
         var Group = $resource('api/groups');
         var g = [];
@@ -127,25 +148,37 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
         //     }
         // }
 
-        // $scope.deleteChirpBox = function(deleteChirpID){
-        //     var x = document.getElementById("deleteChirp");
-        //     x.style.display="block";
-        //     console.log($scope.newReply);
-        //     var Chirp = $resource('/api/posts/:id');
-        //     Chirp.get({ id: deleteChirpID }, function(post){
-        //         $scope.deletePost = post;
-        //     });
-        // }
+        $scope.deleteChirpBox = function(deleteTransID,from,to){
+            var x = document.getElementById("deleteChirp");
+            x.style.display="block";
+            var Trans = $resource('/api/transactions/:id');
+            var transObject ={
+            	from: from,
+            	to: to
+            };
+            Trans.get({ id: deleteTransID }, function(trans){
+            	transObject.trans = trans;
+                $scope.deleteTrans = transObject;
+            });
+            console.log(transObject);
+        }
 
-        // $scope.deleteChirp = function(deleteChirpID){
-        //     var x = document.getElementById("deleteChirp");
-        //     x.style.display="none";
-        //     var ChirpDelete = $resource('/api/posts/'+deleteChirpID);
-        //     ChirpDelete.delete({ id: deleteChirpID }, function(posts){
+        $scope.deleteChirp = function(deleteTrans){
+            var x = document.getElementById("deleteChirp");
+            x.style.display="none";
+            //delete from transaction database
+            var TransDelete = $resource('/api/transactions/'+deleteTrans.trans._id);
+            TransDelete.delete({ id: deleteTrans.trans._id }, function(posts){
                 
-        //         $window.location.reload();
-        //     });
-        // }
+                $window.location.reload();
+            });
+            //update user's transaction to user database
+            var User = $resource('api/users/:id/:transID', {id: deleteTrans.trans.from, transID: deleteTrans.trans._id }, {
+                update: { method: 'PUT' }
+            });
+
+	        console.log("new transactions :"+UserToDeleteTrans.transactions);
+        }
 
         // $scope.closeDeleteChirpBox = function(){
         //     var x = document.getElementById("deleteChirp");
@@ -219,24 +252,7 @@ app.controller('loginCtrl', ['$scope', '$location', '$resource',
     }
 ]);
 
-app.controller('editTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
-    function($scope, $resource, $location, $routeParams){
-        
-        var Chirp = $resource('/api/posts/:id', { id: '@_id' }, {
-            update: { method: 'PUT' }
-        });
 
-        Chirp.get({ id: $routeParams.id }, function(posts){
-            $scope.posts = posts;
-        });
-        
-        $scope.save = function(){
-            Chirp.update($scope.posts, function(){
-                $location.path('/home');
-            });
-        }
-    }]
-);
 
 app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
     function($scope, $resource, $location, $routeParams){
@@ -257,14 +273,15 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
 
         $scope.addTran = function (){
             var checked = {
-                    to: [],
+                    to:{userID: null, userName:null},
                     author: localStorage['id'],
                     amount: $scope.amount,
                     group: $routeParams.id
                 };
             for(var i = 0; i< $scope.users.length; i++){
                 if(document.getElementById($scope.users[i]._id).checked){
-                    checked.to.push($scope.users[i]._id);
+                    checked.to.userID = $scope.users[i]._id;
+                    checked.to.userName = $scope.users[i].userName;
                 }
             }
             var Tran = $resource('/api/transactions/' + $routeParams.id);
@@ -294,16 +311,16 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
 }]);
 
 
-app.controller('DeleteTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
-    function($scope, $resource, $location, $routeParams){
-        var Chirp = $resource('/api/posts/:id');
-        Chirp.get({ id: $routeParams.id }, function(post){
-            $scope.post = post;
-        })
+// app.controller('DeleteTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
+//     function($scope, $resource, $location, $routeParams){
+//         var Chirp = $resource('/api/posts/:id');
+//         Chirp.get({ id: $routeParams.id }, function(post){
+//             $scope.post = post;
+//         })
     
-        $scope.delete = function(){
-            Chirp.delete({ id: $routeParams.id }, function(posts){
-                $location.path('/home');
-            });
-        }
-}]);
+//         $scope.delete = function(){
+//             Chirp.delete({ id: $routeParams.id }, function(posts){
+//                 $location.path('/home');
+//             });
+//         }
+// }]);

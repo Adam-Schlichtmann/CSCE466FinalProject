@@ -41,6 +41,38 @@ router.put('/:id', function(req, res){
   });
 });
 
+//update transactions by removing a transaction
+router.put('/:id/:transID', function(req, res){
+  console.log('updating user transactions');
+  var collection = db.get('users');
+  var userID = req.params.id;
+  var transID= req.params.transID;
+  var userHolder;
+  var transactionsTemp;
+  collection.findOne({ _id: userID }, function(err, user){
+      if (err) throw err;
+
+      userHolder = user;
+  });
+  for(var i =0; i <user.transactions.length;i++){
+    if(userHolder.transactions[i] == transID){
+      transactionsTemp = userHolder.transactions.splice[i,1];
+    }
+  }
+  collection.update({
+    _id: userID
+    },
+    { $set: {
+        transactions: transactionsTemp
+    }
+    }, function(err, user){
+        if (err) throw err;
+        console.log('user transactions updated!');
+        res.json(user);
+  });
+  
+});
+
 // New group
 router.put('/group/:id', function(req, res){
   var collection = db.get('users');
