@@ -1,9 +1,23 @@
-<h1>Edit Your Post</h1>
+<h1>Update a transaction</h1>
 
 <form>
     <div class="form-group">
-        <label>Edit your Transaction</label>		
-        <input class="form-control" ng-model="posts.content"></input>
+        <label>Add new Transaction</label>	
+        <p>If only one name is selected it will assume that you are charging that individual the full amount</p>	
+        <form>
+            <div class="form-group" style="width: 75%">
+                <label>Select a user</label>
+                <div ng-repeat="user in users">
+                    <label>
+                        <input id="{{user._id}}" type="checkbox" ng-model="selectedUsers"/>
+                        {{user.name}}
+                    </label>
+                </div>
+                <label>Enter in the amount</label>
+                $<input ng-model="amount" type="text" placeholder="100.00">
+                
+            </div>
+        </form>
     </div>
-    <input type="button" class="btn btn-primary" value="Save" ng-click="save()"></input>	
+    <input type="button" class="btn btn-primary" value="Save" ng-click="addTran()"></input>	
 </form>

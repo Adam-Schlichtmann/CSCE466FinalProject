@@ -20,7 +20,7 @@ router.get('/', function(req, res) {
 
 router.get('/:id', function(req, res) {
     var collection = db.get('transactions');
-    collection.findOne({ _id: req.params.id }, function(err, tran){
+    collection.find({ group: req.params.id }, function(err, tran){
         if (err) throw err;
 
       	res.json(tran);
@@ -67,6 +67,7 @@ router.post('/:userID', function(req, res){
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date+' '+time;
+
    
     collection.insert({
         from: req.body.author,

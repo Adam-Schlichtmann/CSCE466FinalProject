@@ -19,6 +19,10 @@ app.config(['$routeProvider', function($routeProvider){
             templateUrl: 'partials/newTransaction-form.html',
             controller: 'addTranCtrl'
         })
+        .when('/monthReview/:id', {
+            templateUrl: 'partials/monthReview.html',
+            controller: 'monthReviewCtrl'
+        })
         .when('/transaction/:id', {
             templateUrl: 'partials/update-form.html',
             controller: 'editTranCtrl'
@@ -253,6 +257,89 @@ app.controller('loginCtrl', ['$scope', '$location', '$resource',
 ]);
 
 
+
+// ++++++++++++++++++++++++++++++MONTH REVIEW+++++++++++++++++++++++++++++++++++
+
+app.controller('monthReviewCtrl', ['$scope', '$resource', '$location', '$routeParams',
+    function($scope, $resource, $location, $routeParams){
+        var User = $resource('api/transactions/:id', {id: '@group'});
+        User.query({id: $routeParams.id}, function(transactions){
+            $scope.transactions = transactions;
+        });
+
+        var User = $resource('api/groups/:id', {id: '@_id'});
+        User.get({id: $routeParams.id}, function(group){
+            $scope.group = group;
+            var User = $resource('api/users/group/:id');
+            User.query({id: $scope.group.members}, function(users){
+                $scope.users = users;
+                console.log($scope.users);
+                var result = [];
+
+                for (var i = 0; i<$scope.users.length; i++){
+                    result[i] = [];
+                    for(var j = 0; j<$scope.users.length; j++){
+                        result[i].push({user: $scope.users[j]._id, amount: 0});
+                    }
+                }
+                console.log(result);
+                
+                for (var i = 0; i<$scope.transactions.length; i++){
+                    for(var j = 0; j<$scope.transactions[i].to.length; j++){
+                        for(var k = 0; k<$scope.users.length; k++){
+                            // user k is being charged amount/to.length
+                            if($scope.transactions[i].to[j] == $scope.users[k]._id){
+                                for (var l = 0; l<result[k].length; l++){
+                                    if(k!=l){
+                                        if(result[k][l].user == $scope.transactions[i].from){
+                                            result[k][l].amount += $scope.transactions[i].amount/$scope.transactions[i].to.length;
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                console.log(result);
+                var formatted = []
+                for(var i = 0; i< result.length; i++){
+                    for(var j = i; j< result.length; j++){
+                        if(i!=j){
+                            if(result[i][j].amount > result[j][i].amount){
+                                formatted.push({
+                                    amount: result[i][j].amount - result[j][i].amount,
+                                    from: result[i][j].user,
+                                    to: result[j][i].user
+                                })
+                            } else if (result[i][j].amount < result[j][i].amount){
+                                formatted.push({
+                                    amount: result[j][i].amount - result[i][j].amount,
+                                    from: result[j][i].user,
+                                    to: result[i][j].user
+                                })
+                            }
+                        }
+                    }
+                }
+                console.log(formatted);
+                for(var i = 0; i < formatted.length;i ++){
+                    for(var j = 0; j < $scope.users.length; j++){
+                        if(formatted[i].to == $scope.users[j]._id){
+                            formatted[i].to = $scope.users[j].name;
+                        } else if (formatted[i].from == $scope.users[j]._id){
+                            formatted[i].from = $scope.users[j].name;
+                        }  
+                    }
+                }
+                $scope.results = formatted;
+                console.log(formatted);
+            });
+            
+        });
+    }]
+);
 
 app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
     function($scope, $resource, $location, $routeParams){

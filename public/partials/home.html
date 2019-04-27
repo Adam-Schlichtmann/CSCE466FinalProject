@@ -30,7 +30,7 @@
                 Add a Group
             </a>
         </div>
-        <div class="column" style="width:75%">
+        <div class="column" style="width:50%">
             <div id="newChirp">
                 <form>
                     <div class="form-group" style="width: 35%">
@@ -39,7 +39,12 @@
                             <!-- <option value={{group._id}}>{{group.groupName}}</option> -->
                         </select>     
                     </div>
-                    <a ng-disabled="selectedGroup ==='Not Ready'" class="btn btn-primary"  href="/#/add-transaction/{{selectedGroup._id}}">New Transaction</a>    
+                    <a ng-disabled="selectedGroup ==='Not Ready'" class="btn btn-primary"  href="/#/add-transaction/{{selectedGroup._id}}">
+                      New Transaction
+                    </a>  
+                    <a ng-disabled="selectedGroup ==='Not Ready'" class="btn btn-primary"  href="/#/monthReview/{{selectedGroup._id}}">
+                      Calculate Expenses
+                    </a>  
                 </form>
             </div>
             <div ng-repeat='trans in userTrans'>
@@ -51,7 +56,6 @@
                             </p>
                         </div>
                         <div id="post_content" class="column" style=" width:70%; height: 100px;" >
-
                             <div id="post_text" class="row" style=" padding-top: 20px; padding-left: 30px; height:70%">
                                 <a ng-if="trans.from == user._id" href="/#/chirp/{{post._id}}" style="word-break: break-all; word-wrap: break-word;">
                                     {{trans.authorName}} charged {{trans.trans.to.userName}} for ${{trans.trans.amount}}
