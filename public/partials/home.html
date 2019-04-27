@@ -20,15 +20,10 @@
                 </a>
             </div>
             <h4> OR</h4>
-            <h4> Join a Group</h4>
-            <div ng-repeat="g in newGroups">
+            <h4 style=" margin:auto; border-style: solid; padding: 5px"> Join a Group</h4>
+            <div ng-repeat="g in newGroups" style=" margin:auto; border-style: solid; padding: 20px">
               <input type="button" value="{{g.groupName}} " ng-click="addGroup(g._id)">
             </div>                    
-        </div>
-        <div>
-            <a href="/#/newGroup/{{user._id}}">
-                Add a Group
-            </a>
         </div>
         <div class="column" style="width:50%">
             <div id="newChirp">
@@ -64,7 +59,7 @@
                                     {{trans.authorName}} charged {{trans.trans.to.userName}} for ${{trans.trans.amount}}
                                 </p> 
                             </div>
-                            <div id="options" class="row" align="middle" style="margin:auto; padding-left: 250px; height:20%" >
+                            <div id="options" class="row" align="middle" style="margin:auto; float: right; padding-right: 50px; height:20%" >
                                 <div id="delete" class="column">
                                     <a  ng-click="deleteChirpBox(trans.trans._id,trans.authorName,trans.trans.to.userName)" >
                                         <i class="glyphicon glyphicon-remove"></i>
