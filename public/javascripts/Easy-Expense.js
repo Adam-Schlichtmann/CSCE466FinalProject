@@ -57,46 +57,50 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
         	console.log('all users are :');
         	
         	allUsers = allUsersTemp;
-        	console.log(allUsers);
-        });
-        var Transactions = $resource('api/transactions');
-        Transactions.query(function(trans){
-            console.log(trans);
-            var userTrans = []
-            for(var k = 0; k < trans.length; k++){
-                for(var l = 0; l < $scope.user.groups.length; l++){
-                    if(trans[k].group == $scope.user.groups[l]){
-                    	var nameHolder = 'Unknown';
-                    	var toholder = "";
-                    	for(var p =0; p<allUsers.length; p++ ){
-                    		if(trans[k].from == allUsers[p]._id){
-                    			
-                    			nameHolder = allUsers[p].name;
-                    		}
-                        }
-                        for(var h = 0; h <trans[k].to.length; h++){
+            console.log(allUsers);
+            var Transactions = $resource('api/transactions');
+            Transactions.query(function(trans){
+                console.log(trans);
+                var userTrans = []
+                for(var k = 0; k < trans.length; k++){
+                    for(var l = 0; l < $scope.user.groups.length; l++){
+                        if(trans[k].group == $scope.user.groups[l]){
+                            var nameHolder = 'Unknown';
+                            var toholder = "";
+                            console.log(trans[k].from);
                             for(var p =0; p<allUsers.length; p++ ){
-                                if(trans[k].to[h] == allUsers[p]._id){
-                                    
-                                    toholder += allUsers[p].name + ", "
+                                if(trans[k].from == allUsers[p]._id){
+                                    nameHolder = allUsers[p].name;
                                 }
                             }
+                            console.log(trans[k].to);
+                            console.log(trans[k].to.length);
+                            for(var h = 0; h <trans[k].to.length; h++){
+                                console.log(h);
+                                for(var g =0; p<allUsers.length; g++ ){
+                                    console.log(trans[k].to[h]);
+                                    console.log(allUsers[g]._id);
+                                    if(trans[k].to[h].userID == allUsers[g]._id){
+                                        toholder += allUsers[g].name + ", "
+                                        console.log(toholder);
+                                    }
+                                }
+                            }
+                            
+                            userTrans.push({
+                                trans: trans[k],
+                                authorName: nameHolder,
+                                to: toholder.substring(0, toholder.length -2)
+    
+                            });
+    
                         }
-                    	
-                        userTrans.push({
-                        	trans: trans[k],
-                            authorName: nameHolder,
-                            to: toholder.substring(0, toholder.length -2)
-
-                        });
-
                     }
                 }
-            }
-            console.log('found');
-        	console.log(userTrans);
-            $scope.userTrans = userTrans;
+                $scope.userTrans = userTrans;
+            });
         });
+       
 
         var Group = $resource('api/groups');
         var g = [];
@@ -104,7 +108,6 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
 
         setTimeout(function(){
             Group.query( function(group){
-            console.log(group);
             
             for(var i = 0; i < group.length; i++){
                 var added = false;
@@ -181,7 +184,7 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
             var TransDelete = $resource('/api/transactions/'+deleteTrans._id);
             TransDelete.delete({ id: deleteTrans._id }, function(){
                 
-                // $window.location.reload();
+               
             });
             //update user's transaction to user database
             var User = $resource('api/users/:id', {id: '@_id'});
@@ -191,6 +194,7 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
                 });
     
                 Us.update({id: deleteTrans._id}, user, function(){
+                    $window.location.reload();
                 });
             });
         }
@@ -369,18 +373,22 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
         });
 
         $scope.addTran = function (){
-            var checked = {
-                    to:{userID: null, userName:null},
-                    author: localStorage['id'],
-                    amount: $scope.amount,
-                    group: $routeParams.id
-                };
+                var to = [];
+                var holder = {userID: null, name: null}
             for(var i = 0; i< $scope.users.length; i++){
                 if(document.getElementById($scope.users[i]._id).checked){
-                    checked.to.userID = $scope.users[i]._id;
-                    checked.to.userName = $scope.users[i].userName;
+                    holder.userID = $scope.users[i]._id;
+                    holder.name = $scope.users[i].name;
+                    to.push(holder);
                 }
             }
+            var checked = {
+                to: to,
+                author: localStorage['id'],
+                amount: $scope.amount,
+                group: $routeParams.id
+            };
+
             var Tran = $resource('/api/transactions/' + $routeParams.id);
             Tran.save(checked, function(trans){
                 console.log(trans);

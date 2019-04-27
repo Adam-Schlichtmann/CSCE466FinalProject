@@ -61,7 +61,7 @@
                             </div>
                             <div id="options" class="row" align="middle" style="margin:auto; float: right; padding-right: 50px; height:20%" >
                                 <div id="delete" class="column">
-                                    <a  ng-click="deleteChirpBox(trans.trans._id,trans.authorName,trans.to, trans.trans.amount, trans.trans.from)" >
+                                    <a  ng-if="trans.from == user._id" ng-click="deleteChirpBox(trans.trans._id,trans.authorName,trans.to, trans.trans.amount, trans.trans.from)" >
                                         <i class="glyphicon glyphicon-remove"></i>
                                     </a>    
                                 </div>         
