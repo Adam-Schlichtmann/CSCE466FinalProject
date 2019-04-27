@@ -53,15 +53,15 @@
                         <div id="post_content" class="column" style=" width:70%; height: 100px;" >
                             <div id="post_text" class="row" style=" padding-top: 20px; padding-left: 30px; height:70%">
                                 <a ng-if="trans.from == user._id" href="/#/chirp/{{post._id}}" style="word-break: break-all; word-wrap: break-word;">
-                                    {{trans.authorName}} charged {{trans.trans.to.userName}} for ${{trans.trans.amount}}
+                                    {{trans.authorName}} charged {{trans.to}} for ${{trans.trans.amount}}
                                 </a>    
                                 <p ng-if="trans.from != user._id">
-                                    {{trans.authorName}} charged {{trans.trans.to.userName}} for ${{trans.trans.amount}}
+                                    {{trans.authorName}} charged {{trans.to}} for ${{trans.trans.amount}}
                                 </p> 
                             </div>
                             <div id="options" class="row" align="middle" style="margin:auto; float: right; padding-right: 50px; height:20%" >
                                 <div id="delete" class="column">
-                                    <a  ng-click="deleteChirpBox(trans.trans._id,trans.authorName,trans.trans.to.userName)" >
+                                    <a  ng-click="deleteChirpBox(trans.trans._id,trans.authorName,trans.to, trans.trans.amount, trans.trans.from)" >
                                         <i class="glyphicon glyphicon-remove"></i>
                                     </a>    
                                 </div>         

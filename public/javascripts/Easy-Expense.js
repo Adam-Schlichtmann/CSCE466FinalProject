@@ -67,17 +67,26 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
                 for(var l = 0; l < $scope.user.groups.length; l++){
                     if(trans[k].group == $scope.user.groups[l]){
                     	var nameHolder = 'Unknown';
-                    	
+                    	var toholder = "";
                     	for(var p =0; p<allUsers.length; p++ ){
                     		if(trans[k].from == allUsers[p]._id){
                     			
                     			nameHolder = allUsers[p].name;
                     		}
-                    	}
+                        }
+                        for(var h = 0; h <trans[k].to.length; h++){
+                            for(var p =0; p<allUsers.length; p++ ){
+                                if(trans[k].to[h] == allUsers[p]._id){
+                                    
+                                    toholder += allUsers[p].name + ", "
+                                }
+                            }
+                        }
                     	
                         userTrans.push({
                         	trans: trans[k],
-                        	authorName: nameHolder
+                            authorName: nameHolder,
+                            to: toholder.substring(0, toholder.length -2)
 
                         });
 
@@ -152,42 +161,44 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
         //     }
         // }
 
-        $scope.deleteChirpBox = function(deleteTransID,from,to){
+        $scope.deleteChirpBox = function(deleteTransID,from,to,amount,authorID){
             var x = document.getElementById("deleteChirp");
             x.style.display="block";
-            var Trans = $resource('/api/transactions/:id');
-            var transObject ={
+            var transObject = {
+                _id: deleteTransID,
+                authorID: authorID,
             	from: from,
-            	to: to
+                to: to,
+                amount: amount
             };
-            Trans.get({ id: deleteTransID }, function(trans){
-            	transObject.trans = trans;
-                $scope.deleteTrans = transObject;
-            });
-            console.log(transObject);
+            $scope.deleteTrans = transObject;
         }
 
         $scope.deleteChirp = function(deleteTrans){
             var x = document.getElementById("deleteChirp");
             x.style.display="none";
             //delete from transaction database
-            var TransDelete = $resource('/api/transactions/'+deleteTrans.trans._id);
-            TransDelete.delete({ id: deleteTrans.trans._id }, function(posts){
+            var TransDelete = $resource('/api/transactions/'+deleteTrans._id);
+            TransDelete.delete({ id: deleteTrans._id }, function(){
                 
-                $window.location.reload();
+                // $window.location.reload();
             });
             //update user's transaction to user database
-            var User = $resource('api/users/:id/:transID', {id: deleteTrans.trans.from, transID: deleteTrans.trans._id }, {
-                update: { method: 'PUT' }
+            var User = $resource('api/users/:id', {id: '@_id'});
+            User.get({id: localStorage['id']}, function(user){
+                var Us = $resource('api/users/remove/:id', {id: deleteTrans._id}, {
+                    update: { method: 'PUT' }
+                });
+    
+                Us.update({id: deleteTrans._id}, user, function(){
+                });
             });
-
-	        console.log("new transactions :"+UserToDeleteTrans.transactions);
         }
 
-        // $scope.closeDeleteChirpBox = function(){
-        //     var x = document.getElementById("deleteChirp");
-        //     x.style.display="none";
-        // }
+        $scope.closeDeleteChirpBox = function(){
+            var x = document.getElementById("deleteChirp");
+            x.style.display="none";
+        }
 
     }]
 );
@@ -273,7 +284,9 @@ app.controller('monthReviewCtrl', ['$scope', '$resource', '$location', '$routePa
             var User = $resource('api/users/group/:id');
             User.query({id: $scope.group.members}, function(users){
                 $scope.users = users;
-                console.log($scope.users);
+
+                // =====================Calculate end of month=================
+                
                 var result = [];
 
                 for (var i = 0; i<$scope.users.length; i++){
@@ -282,7 +295,6 @@ app.controller('monthReviewCtrl', ['$scope', '$resource', '$location', '$routePa
                         result[i].push({user: $scope.users[j]._id, amount: 0});
                     }
                 }
-                console.log(result);
                 
                 for (var i = 0; i<$scope.transactions.length; i++){
                     for(var j = 0; j<$scope.transactions[i].to.length; j++){
@@ -302,7 +314,6 @@ app.controller('monthReviewCtrl', ['$scope', '$resource', '$location', '$routePa
                         }
                     }
                 }
-                console.log(result);
                 var formatted = []
                 for(var i = 0; i< result.length; i++){
                     for(var j = i; j< result.length; j++){
@@ -323,7 +334,6 @@ app.controller('monthReviewCtrl', ['$scope', '$resource', '$location', '$routePa
                         }
                     }
                 }
-                console.log(formatted);
                 for(var i = 0; i < formatted.length;i ++){
                     for(var j = 0; j < $scope.users.length; j++){
                         if(formatted[i].to == $scope.users[j]._id){
@@ -334,7 +344,7 @@ app.controller('monthReviewCtrl', ['$scope', '$resource', '$location', '$routePa
                     }
                 }
                 $scope.results = formatted;
-                console.log(formatted);
+                // =====================Calculate end of month=================
             });
             
         });
