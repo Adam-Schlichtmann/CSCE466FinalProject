@@ -48,41 +48,30 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
         //Get single user by ID
         var User = $resource('api/users/:id', {id: '@_id'});
         User.get({id: localStorage['id']}, function(user){
-            console.log(user);
             $scope.user = user;
         });
         var UserAll = $resource('api/users/');
         var allUsers=[];
         UserAll.query(function (allUsersTemp){
-        	console.log('all users are :');
         	
         	allUsers = allUsersTemp;
-            console.log(allUsers);
             var Transactions = $resource('api/transactions');
             Transactions.query(function(trans){
-                console.log(trans);
                 var userTrans = []
                 for(var k = 0; k < trans.length; k++){
                     for(var l = 0; l < $scope.user.groups.length; l++){
                         if(trans[k].group == $scope.user.groups[l]){
                             var nameHolder = 'Unknown';
                             var toholder = "";
-                            console.log(trans[k].from);
                             for(var p =0; p<allUsers.length; p++ ){
                                 if(trans[k].from == allUsers[p]._id){
                                     nameHolder = allUsers[p].name;
                                 }
                             }
-                            console.log(trans[k].to);
-                            console.log(trans[k].to.length);
                             for(var h = 0; h <trans[k].to.length; h++){
-                                console.log(h);
-                                for(var g =0; p<allUsers.length; g++ ){
-                                    console.log(trans[k].to[h]);
-                                    console.log(allUsers[g]._id);
+                                for(var g =0; g<allUsers.length; g++ ){
                                     if(trans[k].to[h].userID == allUsers[g]._id){
                                         toholder += allUsers[g].name + ", "
-                                        console.log(toholder);
                                     }
                                 }
                             }
@@ -175,11 +164,13 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
                 amount: amount
             };
             $scope.deleteTrans = transObject;
+            console.log($scope.deleteTrans);
         }
 
         $scope.deleteChirp = function(deleteTrans){
             var x = document.getElementById("deleteChirp");
             x.style.display="none";
+            
             //delete from transaction database
             var TransDelete = $resource('/api/transactions/'+deleteTrans._id);
             TransDelete.delete({ id: deleteTrans._id }, function(){
@@ -370,16 +361,21 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
                 }
             }
             $scope.users = u;
+            console.log($scope.users);
         });
 
         $scope.addTran = function (){
                 var to = [];
-                var holder = {userID: null, name: null}
             for(var i = 0; i< $scope.users.length; i++){
+                console.log($scope.users[i]._id);
+                console.log(document.getElementById($scope.users[i]._id).checked);
                 if(document.getElementById($scope.users[i]._id).checked){
+                    var holder = {};
                     holder.userID = $scope.users[i]._id;
                     holder.name = $scope.users[i].name;
+                    console.log(holder);
                     to.push(holder);
+                    console.log(to)
                 }
             }
             var checked = {
@@ -400,7 +396,6 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
             );
             //Get single user by ID
             User.get({id: localStorage['id']}, function(user){
-                console.log(user);
                 $scope.user = user;
             });
              

@@ -51,17 +51,14 @@
                             </p>
                         </div>
                         <div id="post_content" class="column" style=" width:70%; height: 100px;" >
-                            <div id="post_text" class="row" style=" padding-top: 20px; padding-left: 30px; height:70%">
-                                <a ng-if="trans.from == user._id" href="/#/chirp/{{post._id}}" style="word-break: break-all; word-wrap: break-word;">
-                                    {{trans.authorName}} charged {{trans.to}} for ${{trans.trans.amount}}
-                                </a>    
-                                <p ng-if="trans.from != user._id">
+                            <div id="post_text" class="row" style=" padding-top: 20px; padding-left: 30px; height:70%">   
+                                <p>
                                     {{trans.authorName}} charged {{trans.to}} for ${{trans.trans.amount}}
                                 </p> 
                             </div>
                             <div id="options" class="row" align="middle" style="margin:auto; float: right; padding-right: 50px; height:20%" >
                                 <div id="delete" class="column">
-                                    <a  ng-if="trans.from == user._id" ng-click="deleteChirpBox(trans.trans._id,trans.authorName,trans.to, trans.trans.amount, trans.trans.from)" >
+                                    <a  ng-if="trans.trans.from == user._id" ng-click="deleteChirpBox(trans.trans._id,trans.authorName,trans.to, trans.trans.amount, trans.trans.from)" >
                                         <i class="glyphicon glyphicon-remove"></i>
                                     </a>    
                                 </div>         
@@ -81,7 +78,7 @@
             </p>
             <h2>
                
-                {{deleteTrans.from}} charged {{deleteTrans.to}} for ${{deleteTrans.trans.amount}}
+                {{deleteTrans.from}} charged {{deleteTrans.to}} for ${{deleteTrans.amount}}
             </h2>
             <input type="button" value="Yes, Delete" class="btn btn-danger" ng-click="deleteChirp(deleteTrans)" />
 
