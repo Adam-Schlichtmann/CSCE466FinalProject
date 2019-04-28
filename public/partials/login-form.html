@@ -1,14 +1,16 @@
 <h1>Login</h1>
+<div width="50%">
+    <form>
+        <div class="form-group" margin="auto" width="50%" padding="10px"> 
+            <label>Enter Username and password</label>		
+            <input class="form-control" ng-model="userName"></input>
+            <input type="password" class="form-control" ng-model="password"></input>
+        </div>
+        <input type="button" class="btn btn-primary" value="Login" ng-click="save(userName,password)"></input>	
+    </form>
+    
+    <p>
+        <a href="/#/register">New User</a>
+    </p>
+</div>
 
-<form>
-    <div class="form-group">
-        <label>Enter Username and password</label>		
-        <input class="form-control" ng-model="userName"></input>
-        <input type="password" class="form-control" ng-model="password"></input>
-    </div>
-    <input type="button" class="btn btn-primary" value="Login" ng-click="save(userName,password)"></input>	
-</form>
-
-<p>
-    <a href="/#/register">New User</a>
-</p>
