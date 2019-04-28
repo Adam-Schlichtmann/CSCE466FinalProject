@@ -295,7 +295,7 @@ app.controller('monthReviewCtrl', ['$scope', '$resource', '$location', '$routePa
                     for(var j = 0; j<$scope.transactions[i].to.length; j++){
                         for(var k = 0; k<$scope.users.length; k++){
                             // user k is being charged amount/to.length
-                            if($scope.transactions[i].to[j] == $scope.users[k]._id){
+                            if($scope.transactions[i].to[j].userID == $scope.users[k]._id){
                                 for (var l = 0; l<result[k].length; l++){
                                     if(k!=l){
                                         if(result[k][l].user == $scope.transactions[i].from){
@@ -350,32 +350,25 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
     function($scope, $resource, $location, $routeParams){
         var User = $resource('/api/users');
         User.query(function(users){
-            console.log(users);
             var u = [];
             for(var i = 0; i < users.length; i++){
                 for(var j = 0; j < users[i].groups.length; j++){
                     if(users[i].groups[j] == $routeParams.id){
-                        console.log(users[i]);
                         u.push(users[i]);
                     }
                 }
             }
             $scope.users = u;
-            console.log($scope.users);
         });
 
         $scope.addTran = function (){
                 var to = [];
             for(var i = 0; i< $scope.users.length; i++){
-                console.log($scope.users[i]._id);
-                console.log(document.getElementById($scope.users[i]._id).checked);
                 if(document.getElementById($scope.users[i]._id).checked){
                     var holder = {};
                     holder.userID = $scope.users[i]._id;
                     holder.name = $scope.users[i].name;
-                    console.log(holder);
                     to.push(holder);
-                    console.log(to)
                 }
             }
             var checked = {
@@ -387,7 +380,6 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
 
             var Tran = $resource('/api/transactions/' + $routeParams.id);
             Tran.save(checked, function(trans){
-                console.log(trans);
                 $scope.trans = trans;
             });
 
@@ -410,17 +402,3 @@ app.controller('addTranCtrl', ['$scope', '$resource', '$location', '$routeParams
         }
 }]);
 
-
-// app.controller('DeleteTranCtrl', ['$scope', '$resource', '$location', '$routeParams',
-//     function($scope, $resource, $location, $routeParams){
-//         var Chirp = $resource('/api/posts/:id');
-//         Chirp.get({ id: $routeParams.id }, function(post){
-//             $scope.post = post;
-//         })
-    
-//         $scope.delete = function(){
-//             Chirp.delete({ id: $routeParams.id }, function(posts){
-//                 $location.path('/home');
-//             });
-//         }
-// }]);
