@@ -33,5 +33,5 @@ Mongo - Installation
     - mongoimport --db expense --collection transactions --file path_to_/transactions.json --jsonArray
 
 Mongo - Commands for Accessing DBs and Collections
-  •show dbs
-  •show collections
+  - show dbs
+  - show collections
