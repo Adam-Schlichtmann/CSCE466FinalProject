@@ -33,11 +33,12 @@ Mongo - Installation
    - $ whoami user (i.e whoami adam)
    - $ sudo chown user /data/db 
    - $ mongod
-2. For creating a Mongo connection, Open terminal and type mongo
+2. For creating a Mongo connection, Open terminal and type mongo (mongod must be running in a different terminal instance)
    - To quit, type quit()
-
-Mongo - Commands for Accessing DBs and Collections
-  - show dbs
-  - show collections
-  - mongoimport --db expense --collection transactions --file path_to_/transactions.json --jsonArray
-    - Use the same command, for groups.json and users.json accordingly
+   - Mongo - Commands for Accessing DBs and Collections
+    - show dbs
+    - use "DBname"
+    - show collections
+    - To import json files
+     - mongoimport --db expense --collection transactions --file path_to_/transactions.json --jsonArray
+      - Use the same command, for groups.json and users.json accordingly
