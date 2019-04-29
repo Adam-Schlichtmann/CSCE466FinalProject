@@ -139,7 +139,7 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
 
             Group.update({id: localStorage['id']}, currentGroup, function(){
             });
-            $location.path('/home');
+            $window.location.reload();
 
         };
 
@@ -199,8 +199,8 @@ app.controller('HomeCtrl', ['$scope', '$resource', '$location', '$routeParams', 
 );
 
 
-app.controller('newGroupCtrl', ['$scope', '$resource', '$location', '$routeParams',
-    function($scope, $resource, $location, $routeParams){
+app.controller('newGroupCtrl', ['$scope', '$resource', '$location', '$routeParams', '$window',
+    function($scope, $resource, $location, $routeParams, $window){
         $scope.newGroup = function(){
             var Groups = $resource('/api/groups/:userID', {userID: $routeParams.id});
             Groups.save($scope.group, function(group){
@@ -239,7 +239,7 @@ app.controller('registerCtrl', ['$scope', '$resource', '$location',
         };
 }]);
 
-app.controller('loginCtrl', ['$scope', '$location', '$resource',
+app.controller('loginCtrl', ['$scope', '$location', '$resource', 
     function($scope, $location, $resource){
         var User = $resource('/api/users/:userName',  { userName: '@userName' });
         $scope.save = function(userName,password){
@@ -255,7 +255,7 @@ app.controller('loginCtrl', ['$scope', '$location', '$resource',
                 if(verified){
                     $location.path('/home');
                 } else {
-                    $location.path('/');
+                    $location.path('/login');
                 }                
             });
         };
@@ -299,7 +299,8 @@ app.controller('monthReviewCtrl', ['$scope', '$resource', '$location', '$routePa
                                 for (var l = 0; l<result[k].length; l++){
                                     if(k!=l){
                                         if(result[k][l].user == $scope.transactions[i].from){
-                                            result[k][l].amount += $scope.transactions[i].amount/$scope.transactions[i].to.length;
+                                            result[k][l].amount += ($scope.transactions[i].amount/$scope.transactions[i].to.length);
+                                            result[k][l].amount = Math.round(result[k][l].amount * 100)/ 100;
                                             break;
                                         }
                                     }
