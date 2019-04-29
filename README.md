@@ -16,7 +16,7 @@ Node - Installation
 
 Mongo - Installation
 1. Download mongoDB server at https://www.mongodb.com/
-    - Once you install Mongo, there a few simple stepsyou need to follow to run it. 
+    - Once you install Mongo, there a few simple steps you need to follow to run it. 
     - You need to create a directory where Mongo will store database files. 
     - This directory should have write permissions for the current user. 
     - Then, you need to run MongoD(Mongo Daemon), which is a background process that handles data requests.
@@ -29,7 +29,8 @@ Mongo - Installation
     - $ sudo chown <user> /data/db 
     - $ mongod
 2. For creating a Mongo connection, Open terminal and type mongo
-    •To quit, type quit()
+    - To quit, type quit()
+    - mongoimport --db expense --collection transactions --file path_to_/transactions.json --jsonArray
 
 Mongo - Commands for Accessing DBs and Collections
   •show dbs
