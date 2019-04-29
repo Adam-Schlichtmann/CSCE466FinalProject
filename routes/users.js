@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var monk = require('monk');
-var db = monk('mongodb:admin:admin@ec2-54-146-61-11.compute-1.amazonaws.com:27017/expenseDB');
+var db = monk('localhost:27017/expense');
 
 router.get('/', function(req, res) {
     var collection = db.get('users');

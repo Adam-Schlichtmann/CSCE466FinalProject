@@ -5,9 +5,9 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 var router = express.Router();
 
-
+//MLEpGkAyw2aN
 var monk = require('monk');
-var db = monk('mongodb:admin:admin@ec2-54-146-61-11.compute-1.amazonaws.com:27017/expenseDB');
+var db = monk('localhost:27017/expense');
 
 router.get('/', function(req, res) {
     var collection = db.get('groups');
