@@ -22,7 +22,12 @@ Mongo - Installation
     - Then, you need to run MongoD(Mongo Daemon), which is a background process that handles data requests.
     - By default, MongoD expects the data directory to be/data/dbin the root of your drive. 
     - You have to create this directory
-
+    - Creating \data\db: Mac System
+    -Open the Terminal and type following:
+    -$ sudo mkdir -p /data/db  
+    -$ whoami hasan 
+    -$ sudo chown hasan /data/db 
+    -$ mongod
 2. For creating a Mongo connection, Open terminal and type mongo
     •To quit, type quit()
 
