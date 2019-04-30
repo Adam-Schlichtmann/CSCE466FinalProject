@@ -1,0 +1,9 @@
+[{ 
+    "_id" : ObjectId("5cc78faad160044b28b58b1d"), 
+    "groupName" : "Roommates", 
+    "members" : [
+        "5cc78f8ed160044b28b58b1a", 
+        "5cc78f9fd160044b28b58b1c", 
+        "5cc78f98d160044b28b58b1b"
+    ]
+}]

@@ -1,0 +1,39 @@
+[{ 
+    "_id" : ObjectId("5cc78f8ed160044b28b58b1a"), 
+    "userName" : "adam", 
+    "password" : "adam", 
+    "name" : "Adam", 
+    "transactions" : [
+        "5cc78fe8d160044b28b58b20", 
+        "5cc78ff1d160044b28b58b21"
+    ], 
+    "groups" : [
+        "5cc78faad160044b28b58b1d"
+    ]
+},
+{ 
+    "_id" : ObjectId("5cc78f98d160044b28b58b1b"), 
+    "userName" : "micheal", 
+    "password" : "micheal", 
+    "name" : "Micheal", 
+    "transactions" : [
+        "5cc78fcad160044b28b58b1e", 
+        "5cc78fd7d160044b28b58b1f"
+    ], 
+    "groups" : [
+        "5cc78faad160044b28b58b1d"
+    ]
+},
+{ 
+    "_id" : ObjectId("5cc78f9fd160044b28b58b1c"), 
+    "userName" : "adrian", 
+    "password" : "adrian", 
+    "name" : "Adrian", 
+    "transactions" : [
+        "5cc79004d160044b28b58b22", 
+        "5cc7900fd160044b28b58b23"
+    ], 
+    "groups" : [
+        "5cc78faad160044b28b58b1d"
+    ]
+}]

@@ -1,0 +1,107 @@
+[{ 
+    "_id" : ObjectId("5cc78fcad160044b28b58b1e"), 
+    "from" : "5cc78f98d160044b28b58b1b", 
+    "date" : "2019-4-29 18:59:6", 
+    "to" : [
+        {
+            "userID" : "5cc78f8ed160044b28b58b1a", 
+            "name" : "Adam"
+        }, 
+        {
+            "userID" : "5cc78f98d160044b28b58b1b", 
+            "name" : "Micheal"
+        }, 
+        {
+            "userID" : "5cc78f9fd160044b28b58b1c", 
+            "name" : "Adrian"
+        }
+    ], 
+    "amount" : "60", 
+    "group" : "5cc78faad160044b28b58b1d"
+},
+{ 
+    "_id" : ObjectId("5cc78fd7d160044b28b58b1f"), 
+    "from" : "5cc78f98d160044b28b58b1b", 
+    "date" : "2019-4-29 18:59:19", 
+    "to" : [
+        {
+            "userID" : "5cc78f8ed160044b28b58b1a", 
+            "name" : "Adam"
+        }, 
+        {
+            "userID" : "5cc78f98d160044b28b58b1b", 
+            "name" : "Micheal"
+        }
+    ], 
+    "amount" : "20", 
+    "group" : "5cc78faad160044b28b58b1d"
+},
+{ 
+    "_id" : ObjectId("5cc78fe8d160044b28b58b20"), 
+    "from" : "5cc78f8ed160044b28b58b1a", 
+    "date" : "2019-4-29 18:59:36", 
+    "to" : [
+        {
+            "userID" : "5cc78f8ed160044b28b58b1a", 
+            "name" : "Adam"
+        }, 
+        {
+            "userID" : "5cc78f98d160044b28b58b1b", 
+            "name" : "Micheal"
+        }, 
+        {
+            "userID" : "5cc78f9fd160044b28b58b1c", 
+            "name" : "Adrian"
+        }
+    ], 
+    "amount" : "90", 
+    "group" : "5cc78faad160044b28b58b1d"
+},
+{ 
+    "_id" : ObjectId("5cc78ff1d160044b28b58b21"), 
+    "from" : "5cc78f8ed160044b28b58b1a", 
+    "date" : "2019-4-29 18:59:45", 
+    "to" : [
+        {
+            "userID" : "5cc78f9fd160044b28b58b1c", 
+            "name" : "Adrian"
+        }
+    ], 
+    "amount" : "15", 
+    "group" : "5cc78faad160044b28b58b1d"
+},
+{ 
+    "_id" : ObjectId("5cc79004d160044b28b58b22"), 
+    "from" : "5cc78f9fd160044b28b58b1c", 
+    "date" : "2019-4-29 19:0:4", 
+    "to" : [
+        {
+            "userID" : "5cc78f8ed160044b28b58b1a", 
+            "name" : "Adam"
+        }, 
+        {
+            "userID" : "5cc78f98d160044b28b58b1b", 
+            "name" : "Micheal"
+        }, 
+        {
+            "userID" : "5cc78f9fd160044b28b58b1c", 
+            "name" : "Adrian"
+        }
+    ], 
+    "amount" : "30", 
+    "group" : "5cc78faad160044b28b58b1d"
+},
+{ 
+    "_id" : ObjectId("5cc7900fd160044b28b58b23"), 
+    "from" : "5cc78f9fd160044b28b58b1c", 
+    "date" : "2019-4-29 19:0:15", 
+    "to" : [
+        {
+            "userID" : "5cc78f98d160044b28b58b1b", 
+            "name" : "Micheal"
+        }
+    ], 
+    "amount" : "120", 
+    "group" : "5cc78faad160044b28b58b1d"
+}
+]
