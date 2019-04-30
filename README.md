@@ -6,6 +6,9 @@ SUBMISSION FILES
    - username and password combination for starter data: U: adam P: adam, U: adrian P: adrian, U: micheal P: micheal.
    - NOTE: You do not need to use this starter data, but if you do not you will need to create multiple accounts and join them to the same group to get the full effect of the application.
 
+LIMITATIONS
+   - The current version of this project is working as expected
+   
 INSTALLATION GUIDE
 
 Application Requirements : 
