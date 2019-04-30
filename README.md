@@ -2,6 +2,7 @@
 SUBMISSION FILES
  - We have provided all source code to compile and run our application at http://localhost:3000/#/login 
    - Follow the installation guide below for instructions on how to install all necessary components
+ - A FinalReport.pdf containing our final report
  - There are three json files: users.json, groups.json, and transactions.json. These files hold a starter dataset that can be used to test our application.
    - username and password combination for starter data: U: adam P: adam, U: adrian P: adrian, U: micheal P: micheal.
    - NOTE: You do not need to use this starter data, but if you do not you will need to create multiple accounts and join them to the same group to get the full effect of the application.
