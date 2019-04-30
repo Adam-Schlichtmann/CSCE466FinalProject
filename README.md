@@ -25,7 +25,7 @@ Mongo - Installation
    - You need to create a directory where Mongo will store database files. 
    - This directory should have write permissions for the current user. 
    - Then, you need to run MongoD(Mongo Daemon), which is a background process that handles data requests.
-   - By default, MongoD expects the data directory to be/data/dbin the root of your drive. 
+   - By default, MongoD expects the data directory to be /data/db in the root of your drive. 
    - You have to create this directory
    Creating \data\db: Mac System
    - Open the Terminal and type following:
