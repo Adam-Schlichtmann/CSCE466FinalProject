@@ -3,7 +3,8 @@ Easy-Expense-WebApp
 SUBMISSION FILES
  - We have provided all source code to compile and run our application at http://localhost:3000/#/login 
    - Follow the installation guide below for instructions on how to install all necessary components
- - There are three json files. users.json groups.json and transactions.json. These files hold a starter dataset that can be used to test our application.
+ - There are three json files: users.json, groups.json, and transactions.json. These files hold a starter dataset that can be used to test our application.
+   - username and password combination for starter data: U: adam P: adam, U: adrian P: adrian, U: micheal P: micheal.
    - NOTE: You do not need to use this starter data, but if you do not you will need to create multiple accounts and join them to the same group to get the full effect of the application.
 
 INSTALLATION GUIDE
@@ -17,7 +18,7 @@ Node - Installation
 2. run " sudo npm install " to install packages required by the webapp
 3. install nodemon  "npm install -g nodemon" globally
 4. run the webapp by entering the root directory of this web app and typing "nodemon"
- •You would need Mongo installed to run the web app as intended
+ - You would need Mongo installed to run the web app as intended
 
 Mongo - Installation
 1. Download mongoDB server at https://www.mongodb.com/
@@ -39,7 +40,14 @@ Mongo - Installation
     - show dbs
     - use "DBname"
     - show collections
+    - db.collectionName.find()
+     - To view contents of a collection
 3. To import json files
    - Open a new terminal and run the following command
    - mongoimport --db expense --collection transactions --file path_to_/transactions.json --jsonArray
     - Use the same command, for groups.json and users.json accordingly
+    
+4. Running Web App
+ - open a terminal enter "mongod"
+ - open another terminal and navigate to the root directory of the project and type "nodemon"
+ - Open chrome and type  http://localhost:3000/#/login into the search bar.
