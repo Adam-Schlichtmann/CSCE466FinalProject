@@ -18,7 +18,7 @@ Node - Installation
 2. run " sudo npm install " to install packages required by the webapp
 3. install nodemon  "npm install -g nodemon" globally
 4. run the webapp by entering the root directory of this web app and typing "nodemon"
- - You would need Mongo installed to run the web app as intended
+   - You would need Mongo installed to run the web app as intended
 
 Mongo - Installation
 1. Download mongoDB server at https://www.mongodb.com/
@@ -48,6 +48,6 @@ Mongo - Installation
     - Use the same command, for groups.json and users.json accordingly
     
 4. Running Web App
- - open a terminal enter "mongod"
- - open another terminal and navigate to the root directory of the project and type "nodemon"
- - Open chrome and type  http://localhost:3000/#/login into the search bar.
+   - open a terminal enter "mongod"
+   - open another terminal and navigate to the root directory of the project and type "nodemon"
+   - Open chrome and type  http://localhost:3000/#/login into the search bar.
