@@ -49,7 +49,7 @@ Mongo - Installation
    - mongoimport --db expense --collection transactions --file path_to_/transactions.json --jsonArray
     - Use the same command, for groups.json and users.json accordingly
     
-4. Running Web App
+Running the Web App
    - open a terminal enter "mongod"
    - open another terminal and navigate to the root directory of the project and type "nodemon"
    - Open chrome and type  http://localhost:3000/#/login into the search bar.
