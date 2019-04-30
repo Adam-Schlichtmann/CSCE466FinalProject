@@ -1,5 +1,4 @@
 # CSCE466FinalProject
-Easy-Expense-WebApp
 SUBMISSION FILES
  - We have provided all source code to compile and run our application at http://localhost:3000/#/login 
    - Follow the installation guide below for instructions on how to install all necessary components
