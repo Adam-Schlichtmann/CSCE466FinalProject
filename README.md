@@ -39,6 +39,7 @@ Mongo - Installation
     - show dbs
     - use "DBname"
     - show collections
-    - To import json files
-     - mongoimport --db expense --collection transactions --file path_to_/transactions.json --jsonArray
-      - Use the same command, for groups.json and users.json accordingly
+3. To import json files
+   - Open a new terminal and run the following command
+   - mongoimport --db expense --collection transactions --file path_to_/transactions.json --jsonArray
+    - Use the same command, for groups.json and users.json accordingly
