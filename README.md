@@ -12,8 +12,9 @@ LIMITATIONS
 INSTALLATION GUIDE
 
 Application Requirements : 
-node 10.15.3
-mongo 4.0.3
+   - node 10.15.3
+   - mongo 4.0.3
+   - We recommend you use these exact versions
 
 Node - Installation
 1. Download the latest stable release of NodeJS from https://nodejs.org and install using all the default options.
